@@ -13,11 +13,15 @@ $('#submit').click(function() {
             if (result.status.name == "ok") {
                 $('#myTextarea').html(textedJson);
 
+                $('#name').html("Name: "+result.data.name);
+                $('#distance').html("Distance: "+result.data.distance);
+                $('#geoid').html("Geoname Id: "+result.data.geonameId);
+
             }
         
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            $('#myTextarea').html("Invalid Coordintes");
+            alert("Invalid Coordintes")
         }
     }); 
 });
@@ -33,16 +37,17 @@ $('#submit1').click(function() {
         },
         success: function(result) {
             let textedJson = JSON.stringify(result, undefined, 4);
-            $('#myTextarea').html("");
 
             if (result.status.name == "ok") {
-                $('#myTextarea').html(textedJson);
+                $('#name').html("Name: "+result.data[0].name);
+                $('#distance').html("Distance: "+result.data[0].distance);
+                $('#geoid').html("Geoname Id: "+result.data[0].geonameId);
 
             }
         
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown)
+            alert("Invalid Coordintes")
         }
     }); 
 });
@@ -58,16 +63,17 @@ $('#sbt').click(function() {
         },
         success: function(result) {
             let textedJson = JSON.stringify(result, undefined, 4);
-            $('#myTextarea').html("");
 
             if (result.status.name == "ok") {
-                $('#myTextarea').html(textedJson);
+                $('#name').html("Name: "+result.data[0].name);
+                $('#distance').html("Distance: "+result.data[0].distance);
+                $('#geoid').html("Geoname Id: "+result.data[0].geonameId);
 
             }
         
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus)
+            alert("Invalid Coordintes")
         }
     }); 
 });
