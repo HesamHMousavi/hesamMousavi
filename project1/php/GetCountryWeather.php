@@ -1,13 +1,11 @@
 <?php
 
-	// remove for production
-
 	ini_set('display_errors', 'On');
 	error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
 
-	$url = 'http://api.geonames.org/oceanJSON?lat=' . $_REQUEST['input1'] . '&lng=' . $_REQUEST['input2'] . '&username=v3skr';
+    $url = "http://api.weatherapi.com/v1/forecast.json?key=92f97897301b4b3da79142335240304&q=".$_REQUEST['city']."&days=8&aqi=no&alerts=no";
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -19,14 +17,9 @@
 	curl_close($ch);
 
 	$decode = json_decode($result,true);	
-
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['data'] = $decode['ocean'];
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
-	echo json_encode($output); 
+	echo json_encode($decode); 
 
 ?>

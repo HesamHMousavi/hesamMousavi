@@ -1,0 +1,53 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.max-height{
+    max-height: 200px;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scroll::-webkit-scrollbar {
+    display: none;
+}
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.hide-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+#map { 
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+/* .bg-gray{
+    background-color: #000;
+}
+.border-lit{
+    border: 1px solid #444;
+    outline: none;
+} */
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    position: fixed;
+    top: 0;
+    /* left: 25%; */
+    z-index: 1000;
+    width: 100%;
+    padding: 11px 0;
+    /* background-color: red; */
+}
+#dropdown-menu{
+    width: 200px !important;
+}
+.dropdown-item{
+    width: 200px !important;
+}
+
+
