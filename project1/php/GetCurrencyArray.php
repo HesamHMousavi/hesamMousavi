@@ -7,7 +7,7 @@
     $url = "https://api.currencyapi.com/v3/currencies";
 
     $headers = array( 
-        "apikey:cur_live_WjJbMvNLqg0ThDvfyUF9Uh6IBsXaNb5Hg6r7TVpc"
+        "apikey:cur_live_E9gh42PfEB5obtEOCo1BBH4zOuT1pzsm1azUfC4P"
     ); 
 
 	$ch = curl_init();
@@ -20,6 +20,15 @@
 
 	curl_close($ch);
 
-    echo $result;
+	$decode = json_decode($result,true);	
+
+	$output['data'] = $decode;
+	$output['status']['code'] = "200";
+	$output['status']['name'] = "ok";
+	$output['status']['description'] = "success";
+	
+	header('Content-Type: application/json; charset=UTF-8');
+
+	echo json_encode($output); 
 
 ?>

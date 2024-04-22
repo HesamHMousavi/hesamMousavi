@@ -49,5 +49,20 @@
 .dropdown-item{
     width: 200px !important;
 }
+.spinner-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    height:100vh;
+    background: rgba(0, 0, 0, 1);
+    z-index: 10000;
+  }
+  .spinner-border{
+    height: 100px;
+    width: 100px;
+  }
+  
 
 

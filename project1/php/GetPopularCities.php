@@ -1,33 +1,31 @@
-<?php 
+<?php
+
+	ini_set('display_errors', 'On');
+	error_reporting(E_ALL);
+
+	$executionStartTime = microtime(true);
+
+    $url = "http://api.geonames.org/searchJSON?q=city&maxRows=35&country=".$_REQUEST["countryISO"]."&cities=cities5000&username=v3skr";
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL,$url);
+
+	$result=curl_exec($ch);
+
+	curl_close($ch);
+
+	$decode = json_decode($result,true);	
 	
-// Define the URL and data 
-$url = 'https://countriesnow.space/api/v0.1/countries/cities'; 
-$url = 'https://countriesnow.space/api/v0.1/countries/population/cities/filter'; 
-$county = $_REQUEST["country"];
-$data = [
-    'limit' => '25',
-    "order" => "dsc",
-	"orderBy" => "population",
-	"country" => $county,
-]; 
+	$output['data'] = $decode;
+	$output['status']['code'] = "200";
+	$output['status']['name'] = "ok";
+	$output['status']['description'] = "success";
+	
+	header('Content-Type: application/json; charset=UTF-8');
 
-// Prepare POST data 
-$options = [ 
-	'http' => [ 
-		'method' => 'POST', 
-		'header' => 'Content-type: application/x-www-form-urlencoded', 
-		'content' => http_build_query($data), 
-	], 
-]; 
-
-// Create stream context 
-$context = stream_context_create($options); 
-
-// Perform POST request 
-$response = file_get_contents($url, false, $context); 
-
-// Display the response 
-echo $response; 
+	echo json_encode($output); 
 
 ?>
 

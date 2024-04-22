@@ -5,7 +5,7 @@
 
 	$executionStartTime = microtime(true);
 
-    $url = "http://api.weatherapi.com/v1/forecast.json?key=92f97897301b4b3da79142335240304&q=".$_REQUEST['city']."&days=8&aqi=no&alerts=no";
+    $url = "http://api.weatherapi.com/v1/forecast.json?key=98c05a3ec45d467585381431241704&q=".$_REQUEST['city']."&days=3&aqi=no&alerts=no";
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -18,8 +18,13 @@
 
 	$decode = json_decode($result,true);	
 	
+	$output['data'] = $decode;
+	$output['status']['code'] = "200";
+	$output['status']['name'] = "ok";
+	$output['status']['description'] = "success";
+	
 	header('Content-Type: application/json; charset=UTF-8');
 
-	echo json_encode($decode); 
+	echo json_encode($output); 
 
 ?>

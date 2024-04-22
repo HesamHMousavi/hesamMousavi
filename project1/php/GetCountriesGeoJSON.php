@@ -17,6 +17,9 @@
     }
     
 	$output['data'] = $obj;
+	$output['status']['code'] = "200";
+	$output['status']['name'] = "ok";
+	$output['status']['description'] = "success";
 	
 	header('Content-Type: application/json; charset=UTF-8');
 

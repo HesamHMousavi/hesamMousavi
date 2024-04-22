@@ -5,23 +5,18 @@
 
 	$executionStartTime = microtime(true);
 
-    $url = "https://countriesnow.space/api/v0.1/countries/positions";
+	$result= file_get_contents('../js/countryBorders.geo.json'); 
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
-
-	$result=curl_exec($ch);
-
-	curl_close($ch);
-
+	$arr = [];
 	$decode = json_decode($result,true);	
-
+    foreach ($decode["features"] as $object) {
+		array_push($arr, $object["properties"]);
+    }
+    
+	$output['data'] = $arr;
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
-	$output['data'] = $decode['data'];
 	
 	header('Content-Type: application/json; charset=UTF-8');
 

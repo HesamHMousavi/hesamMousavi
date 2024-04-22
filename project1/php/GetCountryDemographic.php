@@ -7,7 +7,7 @@
     $url = "https://api.api-ninjas.com/v1/country?name=" . rawurlencode($_REQUEST['country']);
 
     $headers = array( 
-        "X-Api-Key:9JQ79aLd+QQvrALme46dMQ==9w25xOz08E7fShOY"
+        "X-Api-Key:LGXs6KJBdzHqLPvN5V+Isw==zezxfTekkoTFeLox"
     ); 
 
 	$ch = curl_init();
@@ -20,18 +20,17 @@
 
 	curl_close($ch);
 
-    echo $result;
+    // echo $result;
 
+	$decode = json_decode($result,true);	
 
-	// $decode = json_decode($result,true);	
-
-	// $output['status']['code'] = "200";
-	// $output['status']['name'] = "ok";
-	// $output['status']['description'] = "success";
-	// $output['data'] = $decode['data'];
+	$output['data'] = $decode;
+	$output['status']['code'] = "200";
+	$output['status']['name'] = "ok";
+	$output['status']['description'] = "success";
 	
-	// header('Content-Type: application/json; charset=UTF-8');
+	header('Content-Type: application/json; charset=UTF-8');
 
-	// echo json_encode($output); 
+	echo json_encode($output); 
 
 ?>
