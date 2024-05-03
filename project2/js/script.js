@@ -10,36 +10,97 @@ $(document).ready(function(){
       success: function(res){
         if(res.status.code === "200"){
           $("#personnelTableBody").empty()
-          res.data.forEach(person =>{
-            $("#personnelTableBody").append(
-              `
-              <tr>
-                <td class="align-middle text-nowrap">
-                ${person.firstName}, ${person.lastName}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                ${person.department}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                ${person.location}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                ${person.email}
-                </td>
-                <td class="text-end text-nowrap">
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id=${person.id}>
-                    <i class="fa-solid fa-pencil fa-fw"></i>
-                </button>
-                <button type="button" class="btn btn-primary btn-sm deletePersonnelBtn" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id=${person.id}>
-                    <i class="fa-solid fa-trash fa-fw"></i>
-                </button>
-                </td>
-              </tr>
-              `
-            )
-          })
+          var frag = document.createDocumentFragment();
 
-        }else{
+          res.data.forEach(person =>{
+            var row = document.createElement("tr");
+
+            var name = document.createElement("td");
+            name.classList = "align-middle text-nowrap";
+            var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+            name.append(nameText);
+            row.append(name);
+            
+            var department = document.createElement("td");
+            var departmentText = document.createTextNode(person.department);
+            department.classList = "align-middle text-nowrap";
+            department.append(departmentText);
+            row.append(department);
+
+            var location = document.createElement("td");
+            var locationText = document.createTextNode(person.location);
+            location.classList = "align-middle text-nowrap";
+            location.append(locationText);
+            row.append(location);
+
+            var email = document.createElement("td");
+            var emailText = document.createTextNode(person.email);
+            email.classList = "align-middle text-nowrap";
+            email.append(emailText);
+            row.append(email);
+            
+
+            var btnTD = document.createElement("td");
+            btnTD.classList = "text-end text-nowrap";
+
+            var btn1 = document.createElement("button");
+            btn1.classList = "btn btn-primary btn-sm m-1"
+            btn1.setAttribute("data-bs-toggle", "modal")
+            btn1.setAttribute("type", "button")
+            btn1.setAttribute("data-bs-target","#editPersonnelModal")
+            btn1.setAttribute("data-bs-target","#editPersonnelModal")
+            btn1.setAttribute("data-id",person.id)
+            var icon1 = document.createElement("i")
+            icon1.classList = "fa-solid fa-pencil fa-fw";
+            btn1.append(icon1)
+
+            var btn2 = document.createElement("button");
+            btn2.classList = "btn btn-primary btn-sm"
+            btn2.setAttribute("type", "button")
+            btn2.setAttribute("data-bs-toggle", "modal")
+            btn2.setAttribute("data-bs-target","#deletePersonnelModal")
+            btn2.setAttribute("data-id",person.id)
+            var icon2 = document.createElement("i");
+            icon2.classList = "fa-solid fa-trash fa-fw";
+            btn2.append(icon2)
+
+            btnTD.append(btn1);
+            btnTD.append(btn2);
+            row.append(btnTD);    
+                      
+            frag.append(row);
+
+            // $("#personnelTableBody").append(
+            //   `
+            //   <tr>
+            //     <td class="align-middle text-nowrap">
+            //     ${person.firstName}, ${person.lastName}
+            //     </td>
+            //     <td class="align-middle text-nowrap d-none d-md-table-cell">
+            //     ${person.department}
+            //     </td>
+            //     <td class="align-middle text-nowrap d-none d-md-table-cell">
+            //     ${person.location}
+            //     </td>
+            //     <td class="align-middle text-nowrap d-none d-md-table-cell">
+            //     ${person.email}
+            //     </td>
+            //     <td class="text-end text-nowrap">
+            //     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id=${person.id}>
+            //         <i class="fa-solid fa-pencil fa-fw"></i>
+            //     </button>
+            //     <button type="button" class="btn btn-primary btn-sm deletePersonnelBtn" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id=${person.id}>
+            //         <i class="fa-solid fa-trash fa-fw"></i>
+            //     </button>
+            //     </td>
+            //   </tr>
+            //   `
+            // )
+          })
+          $('#personnelTableBody').append(frag);
+
+        }
+        else{
           setAlert(res.status.description)
         }
       },
@@ -57,54 +118,44 @@ $(document).ready(function(){
       type: "GET",
       dataType: "json",
       success:function(res){
+        let rows = ""
         if(res.status.code === "200"){
-          res.data.forEach(department =>{
-            $.ajax({
-              url:"php/getLocationByID.php",
-              type: "POST",
-              dataType: "json",
-              data:{
-                id: department.locationID
-              },
-              success:function(res){
-                if(res.status.code === "200"){
-                  $("#departmentTableBody").append(
-                    `
-                    <tr>
-                      <td class="align-middle text-nowrap">
-                      ${department.name}
-                      </td>
-                      <td class="align-middle text-nowrap d-none d-md-table-cell">
-                      ${res.data[0].name}
-                      </td>
-                      <td class="align-middle text-end text-nowrap"> 
-                      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id=${department.id}>
-                          <i class="fa-solid fa-pencil fa-fw"></i>
-                      </button>
-                      <button type="button" class="btn btn-primary btn-sm deleteDepartmentBtn" data-id=${department.id}>
-                          <i class="fa-solid fa-trash fa-fw"></i>
-                      </button>
-                      </td>
-                    </tr> 
-                    `
-                  )
-                }
-              },
-              error: function (jqXHR, textStatus, errorThrown) {
-                setAlert(errorThrown)
-                
-              }
-            })
+          res.data.forEach(item =>{
+            rows+=
+              `
+              <tr>
+                <td class="align-middle text-nowrap">
+                ${item.departmentName}
+                </td>
+                <td class="align-middle text-nowrap d-none d-md-table-cell">
+                ${item.locationName}
+                </td>
+                <td class="align-middle text-end text-nowrap"> 
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id=${item.ID}>
+                    <i class="fa-solid fa-pencil fa-fw"></i>
+                </button>
+                <button type="button" class="btn btn-primary btn-sm deleteDepartmentBtn" data-id=${item.ID}>
+                    <i class="fa-solid fa-trash fa-fw"></i>
+                </button>
+                </td>
+              </tr> 
+              `
+              $("#filterPersonnelByDepartment").append(
+                $("<option>", {
+                  value: item.ID,
+                  text: item.departmentName
+                })
+              );
           })
+          $("#departmentTableBody").empty()
+          $("#departmentTableBody").append(rows)
         }
         else{
           setAlert(res.status.description)
-          
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         setAlert(errorThrown)
-        
       }
     })
   }
@@ -117,9 +168,9 @@ $(document).ready(function(){
       dataType: "json",
       success:function(res){
         if(res.status.code === "200"){
+          let rows = ""
           res.data.forEach(location=>{
-            $("#locationTableBody").append(
-              `
+            rows+=`
               <tr>
                 <td class="align-middle text-nowrap">
                 ${location.name}
@@ -134,9 +185,17 @@ $(document).ready(function(){
                 </td>
               </tr>
               `
-            )
+              $("#filterPersonnelByLocation").append(
+                $("<option>", {
+                  value: location.id,
+                  text: location.name
+                })
+              );
           })
+          $("#locationTableBody").empty()
+          $("#locationTableBody").append(rows)
         }
+        
         else{
           setAlert(res.status.description)
           
@@ -153,6 +212,8 @@ $(document).ready(function(){
   getAllDepartments()
   getAllLocations()
 
+  
+
   const SearchPersonnel = () =>{
     $("#personnelTableBody").empty()
     let txt = $("#searchInp").val()
@@ -165,34 +226,68 @@ $(document).ready(function(){
       },
       success:function(res){
         if(res.status.code === "200"){
+          var frag = document.createDocumentFragment();
           res.data.found.forEach(person =>{
-            $("#personnelTableBody").append(
-              `
-              <tr>
-                <td class="align-middle text-nowrap">
-                ${person.firstName}, ${person.lastName}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                ${person.departmentName}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                ${person.locationName}
-                </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
-                ${person.email}
-                </td>
-                <td class="text-end text-nowrap">
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPersonnelModal" data-id=${person.id}>
-                    <i class="fa-solid fa-pencil fa-fw"></i>
-                </button>
-                <button type="button" class="btn btn-primary btn-sm deletePersonnelBtn" data-bs-toggle="modal" data-bs-target="#deletePersonnelModal" data-id=${person.id}>
-                    <i class="fa-solid fa-trash fa-fw"></i>
-                </button>
-                </td>
-              </tr>
-              `
-            )
+            $("#personnelTableBody").empty()
+  
+              var row = document.createElement("tr");
+  
+              var name = document.createElement("td");
+              name.classList = "align-middle text-nowrap";
+              var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+              name.append(nameText);
+              row.append(name);
+              
+              var department = document.createElement("td");
+              var departmentText = document.createTextNode(person.departmentName);
+              department.classList = "align-middle text-nowrap";
+              department.append(departmentText);
+              row.append(department);
+  
+              var location = document.createElement("td");
+              var locationText = document.createTextNode(person.locationName);
+              location.classList = "align-middle text-nowrap";
+              location.append(locationText);
+              row.append(location);
+  
+              var email = document.createElement("td");
+              var emailText = document.createTextNode(person.email);
+              email.classList = "align-middle text-nowrap";
+              email.append(emailText);
+              row.append(email);
+              
+  
+              var btnTD = document.createElement("td");
+              btnTD.classList = "text-end text-nowrap";
+  
+              var btn1 = document.createElement("button");
+              btn1.classList = "btn btn-primary btn-sm m-1"
+              btn1.setAttribute("data-bs-toggle", "modal")
+              btn1.setAttribute("type", "button")
+              btn1.setAttribute("data-bs-target","#editPersonnelModal")
+              btn1.setAttribute("data-bs-target","#editPersonnelModal")
+              btn1.setAttribute("data-id",person.id)
+              var icon1 = document.createElement("i")
+              icon1.classList = "fa-solid fa-pencil fa-fw";
+              btn1.append(icon1)
+  
+              var btn2 = document.createElement("button");
+              btn2.classList = "btn btn-primary btn-sm"
+              btn2.setAttribute("type", "button")
+              btn2.setAttribute("data-bs-toggle", "modal")
+              btn2.setAttribute("data-bs-target","#deletePersonnelModal")
+              btn2.setAttribute("data-id",person.id)
+              var icon2 = document.createElement("i");
+              icon2.classList = "fa-solid fa-trash fa-fw";
+              btn2.append(icon2)
+  
+              btnTD.append(btn1);
+              btnTD.append(btn2);
+              row.append(btnTD);    
+                        
+              frag.append(row);
           })
+          $('#personnelTableBody').append(frag);
         }
         else{
           setAlert(res.status.description)
@@ -361,23 +456,6 @@ $(document).ready(function(){
   });
   
   $("#filterBtn").click(function () {
-
-    if ($("#personnelBtn").hasClass("active")) {  
-      // Refresh personnel table
-      
-    } else {
-      
-      if ($("#departmentsBtn").hasClass("active")) {
-        
-        // Refresh department table
-        
-      } else {
-        
-        // Refresh location table
-        
-      }
-      
-    }
     
   });
   
@@ -385,10 +463,191 @@ $(document).ready(function(){
     // Replicate the logic of the refresh button click to open the add modal for the table that is currently on display
     
   });
+
+  $("#filterPersonnelByDepartment").change(function () {
+  
+    if (this.value > 0) {
+      $("#filterPersonnelByLocation").val(0);
+      // apply Filter
+
+      $.ajax({
+        url:"php/filterByDepartment.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+          id: this.value
+        },
+        success: function (res) {
+          if(res.status.code === "200"){
+            $("#personnelTableBody").empty()
+            var frag = document.createDocumentFragment();
+  
+            res.data.forEach(person =>{
+              var row = document.createElement("tr");
+  
+              var name = document.createElement("td");
+              name.classList = "align-middle text-nowrap";
+              var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+              name.append(nameText);
+              row.append(name);
+              
+              var department = document.createElement("td");
+              var departmentText = document.createTextNode(person.department);
+              department.classList = "align-middle text-nowrap";
+              department.append(departmentText);
+              row.append(department);
+  
+              var location = document.createElement("td");
+              var locationText = document.createTextNode(person.location);
+              location.classList = "align-middle text-nowrap";
+              location.append(locationText);
+              row.append(location);
+  
+              var email = document.createElement("td");
+              var emailText = document.createTextNode(person.email);
+              email.classList = "align-middle text-nowrap";
+              email.append(emailText);
+              row.append(email);
+              
+  
+              var btnTD = document.createElement("td");
+              btnTD.classList = "text-end text-nowrap";
+  
+              var btn1 = document.createElement("button");
+              btn1.classList = "btn btn-primary btn-sm m-1"
+              btn1.setAttribute("data-bs-toggle", "modal")
+              btn1.setAttribute("type", "button")
+              btn1.setAttribute("data-bs-target","#editPersonnelModal")
+              btn1.setAttribute("data-bs-target","#editPersonnelModal")
+              btn1.setAttribute("data-id",person.id)
+              var icon1 = document.createElement("i")
+              icon1.classList = "fa-solid fa-pencil fa-fw";
+              btn1.append(icon1)
+  
+              var btn2 = document.createElement("button");
+              btn2.classList = "btn btn-primary btn-sm"
+              btn2.setAttribute("type", "button")
+              btn2.setAttribute("data-bs-toggle", "modal")
+              btn2.setAttribute("data-bs-target","#deletePersonnelModal")
+              btn2.setAttribute("data-id",person.id)
+              var icon2 = document.createElement("i");
+              icon2.classList = "fa-solid fa-trash fa-fw";
+              btn2.append(icon2)
+  
+              btnTD.append(btn1);
+              btnTD.append(btn2);
+              row.append(btnTD);    
+                        
+              frag.append(row);
+            })
+            $('#personnelTableBody').append(frag);
+  
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR.responseText)
+        }
+      });
+        
+    }
+    if($("#filterPersonnelByLocation").val() == 0 && $("#filterPersonnelByDepartment").val() == 0){
+      getAllPersonnel()
+    }
+})
+
+  $("#filterPersonnelByLocation").change(function () {
+    
+      if (this.value > 0) {
+        $("#filterPersonnelByDepartment").val(0);
+        $.ajax({
+          url:"php/filterByLocation.php",
+          type: "POST",
+          dataType: "json",
+          data: {
+            id: this.value
+          },
+          success: function (res) {
+            if(res.status.code === "200"){
+              $("#personnelTableBody").empty()
+              var frag = document.createDocumentFragment();
+    
+              res.data.forEach(person =>{
+                var row = document.createElement("tr");
+    
+                var name = document.createElement("td");
+                name.classList = "align-middle text-nowrap";
+                var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+                name.append(nameText);
+                row.append(name);
+                
+                var department = document.createElement("td");
+                var departmentText = document.createTextNode(person.department);
+                department.classList = "align-middle text-nowrap";
+                department.append(departmentText);
+                row.append(department);
+    
+                var location = document.createElement("td");
+                var locationText = document.createTextNode(person.location);
+                location.classList = "align-middle text-nowrap";
+                location.append(locationText);
+                row.append(location);
+    
+                var email = document.createElement("td");
+                var emailText = document.createTextNode(person.email);
+                email.classList = "align-middle text-nowrap";
+                email.append(emailText);
+                row.append(email);
+                
+    
+                var btnTD = document.createElement("td");
+                btnTD.classList = "text-end text-nowrap";
+    
+                var btn1 = document.createElement("button");
+                btn1.classList = "btn btn-primary btn-sm m-1"
+                btn1.setAttribute("data-bs-toggle", "modal")
+                btn1.setAttribute("type", "button")
+                btn1.setAttribute("data-bs-target","#editPersonnelModal")
+                btn1.setAttribute("data-bs-target","#editPersonnelModal")
+                btn1.setAttribute("data-id",person.id)
+                var icon1 = document.createElement("i")
+                icon1.classList = "fa-solid fa-pencil fa-fw";
+                btn1.append(icon1)
+    
+                var btn2 = document.createElement("button");
+                btn2.classList = "btn btn-primary btn-sm"
+                btn2.setAttribute("type", "button")
+                btn2.setAttribute("data-bs-toggle", "modal")
+                btn2.setAttribute("data-bs-target","#deletePersonnelModal")
+                btn2.setAttribute("data-id",person.id)
+                var icon2 = document.createElement("i");
+                icon2.classList = "fa-solid fa-trash fa-fw";
+                btn2.append(icon2)
+    
+                btnTD.append(btn1);
+                btnTD.append(btn2);
+                row.append(btnTD);    
+                          
+                frag.append(row);
+              })
+              $('#personnelTableBody').append(frag);
+    
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.responseText)
+          }
+        });
+        // apply Filter
+      }
+      if($("#filterPersonnelByLocation").val() == 0 && $("#filterPersonnelByDepartment").val() == 0){
+        getAllPersonnel()
+      }
+  })
   
   $("#personnelBtn").click(function () {
     $("#addBtn").attr("data-bs-target","#addPersonnelModal")
     $("#refreshBtn").trigger("click")
+    $("#filterBtn").attr("disabled", false);
     // Call function to refresh personnel table
     
   });
@@ -396,13 +655,14 @@ $(document).ready(function(){
   $("#departmentsBtn").click(function () {
     $("#addBtn").attr("data-bs-target","#addDepartmentModal")
     $("#refreshBtn").trigger("click")
-    // Call function to refresh department table
+    $("#filterBtn").attr("disabled", true);
     
   });
   
   $("#locationsBtn").click(function () {
     $("#addBtn").attr("data-bs-target","#addLocationModal")
     $("#refreshBtn").trigger("click")
+    $("#filterBtn").attr("disabled", true);
     // Call function to refresh location table
     
   });
@@ -547,10 +807,11 @@ $(document).ready(function(){
         $("#addPersonnelDepartment").html("")
         if (res.status.code === "200") {
           $.each(res.data, function () {
+            // console.log(res.data)
             $("#addPersonnelDepartment").append(
               $("<option>", {
-                value: this.id,
-                text: this.name
+                value: this.ID,
+                text: this.departmentName
               })
             );
           });
@@ -610,10 +871,34 @@ $(document).ready(function(){
   // :DELETE
   $("#deletePersonnelModal").on("show.bs.modal", function (e) {
     $("#deletePersonnelForm").attr('data-id',$(e.relatedTarget).attr("data-id"));
+    $.ajax({
+      url:
+        "php/getPersonnelByID.php",
+      type: "POST",
+      dataType: "json",
+      data: {
+        id: $(e.relatedTarget).attr("data-id") 
+      },
+      success: function (result) {
+        $("#editPersonnelForm").attr('data-id',$(e.relatedTarget).attr("data-id"));
+        var resultCode = result.status.code;
+        if (resultCode == 200) {
+          let user = result.data.personnel[0]
+          $("#deletePersonnelQuestion").html(`Are you sure that you want to remove the entry for <strong>${user.lastName}, ${user.firstName} </strong>?`)
+        } else {
+
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+      
+
+      }
+    });
   });
 
   $(document).on("click", ".deleteDepartmentBtn", function() {
     let departmentId = $(this).data("id");
+    let dpName = ""
     $.ajax({
       url:"php/getDepartmentDependencyCount.php",
       type: "POST",
@@ -622,19 +907,36 @@ $(document).ready(function(){
         id: parseInt(departmentId)
       },
       success: function(res) {
-
         if(res.status.code === "200"){
-          let personnelCount = res.data.personnel[0].personnel_count
-          if(personnelCount > 0){
-            $("#warningModal").modal("show")
-            $("#dependency-warining").text(`
-            You cannot remove this department because it has ${personnelCount} ${personnelCount > 1 ? "employees" : "employee"} employees assigned to it.`)
-            return
-          }
-          else{
-            $("#deleteDepartmentForm").attr('data-id',departmentId);
-            $("#deleteDepartmentModal").modal("show")
-          }
+          let personnelCount = res.data.personnel[0].personnelCount
+          $.ajax({
+            url:"php/getDepartmentByID.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+              id: departmentId
+            },
+            success: function (res2) {
+              if (res2.status.code === "200") {
+                if(personnelCount > 0){
+                  $("#warningModal").modal("show")
+                  $("#dependency-warining").html(`
+                  You cannot remove <strong>${res2.data[0].name}</strong> because it has <strong>${personnelCount} ${personnelCount > 1 ? "employees" : "employee"} </strong> assigned to it.`)
+                }
+                else{
+                  $("#deleteDepartmentForm").attr('data-id',departmentId);
+                  $("#removeDepartmentQuestion").html(`Are you sure you want to delete the entry for <strong>${res2.data[0].name}</strong> ?`);
+                  $("#deleteDepartmentModal").modal("show")
+                }
+              }
+              },
+            error: function (jqXHR, textStatus, errorThrown) {
+              // $("#editDepartmentModal .modal-title").replaceWith(
+              //   "Error retrieving data"
+              // );
+            }
+          });
+
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -654,17 +956,16 @@ $(document).ready(function(){
         id: parseInt(locationId)
       },
       success: function(res) {
-
         if(res.status.code === "200"){
-          let departmentCount = res.data[0].department_count
-          if(departmentCount > 0){
+          if(res.data[0].department_count > 0){
             $("#warningModal").modal("show")
-            $("#dependency-warining").text(`
-            You cannot remove this location because it has ${departmentCount} ${departmentCount > 1  ? "departments" : "department"} assigned to it.`)
+            $("#dependency-warining").html(`
+            You cannot remove <strong>${res.data[0].location_name} </strong> because it has <strong>${res.data[0].department_count} ${res.data[0].department_count > 1  ? "departments" : "department"} </strong> assigned to it.`)
             return
           }
           else{
-            $("#deleteLocForm").attr('data-id',locationId);
+            $("#deleteLocForm").attr('data-id',res.data[0].locationID);
+            $("#removeLocationQuestion").html(`Are you sure you want to remove <strong>${res.data[0].location_name}</strong>?`)
             $("#deleteLocationModal").modal("show")
           }
         }

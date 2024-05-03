@@ -36,7 +36,7 @@
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
 	// $query = $conn->prepare('SELECT id, name, FROM location WHERE id =  ?');
-    $query = $conn->prepare('SELECT `id`, `name` FROM `location`');
+    $query = $conn->prepare('SELECT `id`, `name` FROM `location` order by name');
 
 	$query->execute();
 	

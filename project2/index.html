@@ -30,9 +30,10 @@
                       <button id="refreshBtn" type="button" class="btn btn-primary">
                           <i class="fa-solid fa-refresh fa-fw"></i>
                       </button>
-                      <button id="filterBtn" type="button" class="btn btn-primary">
-                          <i class="fa-solid fa-filter fa-fw"></i>
-                      </button>          
+
+                      <button id="filterBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterPersonnelModal">
+                        <i class="fa-solid fa-filter fa-fw"></i>
+                      </button>
                       <button id="addBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPersonnelModal">
                           <i class="fa-solid fa-plus fa-fw"></i>
                       </button>
@@ -228,67 +229,49 @@
         <!-- :ADD -->
 
         <div id="addPersonnelModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          
-          <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-              
-              <div class="modal-content shadow"> 
-              
-              <div class="modal-header bg-primary bg-gradient text-white">
-                  <h5 class="modal-title">Add Employee</h5>
-                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-  
-              <div class="modal-body">
-                  
-                  <form id="addPersonnelForm">
-  
-                  <input type="hidden" id="editPersonnelEmployeeID">
-  
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="addPersonnelFirstName" placeholder="First name" required>
-                      <label for="addPersonnelFirstName">First name</label>
-                  </div>
-  
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="addPersonnelLastName" placeholder="Last name" required>
-                      <label for="addPersonnelLastName">Last name</label>
-                  </div>
-  
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="addPersonnelJobTitle" placeholder="Job title" required>
-                      <label for="addPersonnelJobTitle">Job Title</label>
-                  </div>          
-  
-                  <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="addPersonnelEmailAddress" placeholder="Email address" required>
-                      <label for="addPersonnelEmailAddress">Email Address</label>
-                  </div>    
-  
-                  <div class="form-floating">
-                      <select class="form-select" id="addPersonnelDepartment" placeholder="Department">
-                      </select>
-                      <label for="addPersonnelDepartment">Department</label>
-                  </div>  
-  
-                  </form>
-  
-              </div>
-  
-              <div class="modal-footer">
-                  <button type="submit" form="addPersonnelForm" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">SAVE</button>
-                  <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-              </div>
-          
-              </div>
-              
-          </div>
-          
+            <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">      
+                <div class="modal-content shadow"> 
+                <div class="modal-header bg-primary bg-gradient text-white">
+                    <h5 class="modal-title">Add Employee</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addPersonnelForm">
+                    <input type="hidden" id="editPersonnelEmployeeID">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="addPersonnelFirstName" placeholder="First name" required>
+                        <label for="addPersonnelFirstName">First name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="addPersonnelLastName" placeholder="Last name" required>
+                        <label for="addPersonnelLastName">Last name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="addPersonnelJobTitle" placeholder="Job title" required>
+                        <label for="addPersonnelJobTitle">Job Title</label>
+                    </div>          
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="addPersonnelEmailAddress" placeholder="Email address" required>
+                        <label for="addPersonnelEmailAddress">Email Address</label>
+                    </div>    
+                    <div class="form-floating">
+                        <select class="form-select" id="addPersonnelDepartment" placeholder="Department">
+                        </select>
+                        <label for="addPersonnelDepartment">Department</label>
+                    </div>  
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="addPersonnelForm" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">SAVE</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                </div>
+                </div>
+            </div>
         </div>
+          
 
         <div id="addDepartmentModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
         
-            <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
-            <!--   that the header and footer are always on display by making the body scroll -->
             
             <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
                 
@@ -356,8 +339,7 @@
                 
             </div>
             
-        </div>
-
+        </div> 
         <!-- :DELETE -->
 
         <div id="deletePersonnelModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -366,8 +348,8 @@
                 
                 <div class="modal-content shadow"> 
                 
-                <div class="modal-header bg-danger bg-gradient text-white">
-                    <h5 class="modal-title">Delete Employee</h5>
+                <div class="modal-header bg-primary bg-gradient text-white">
+                    <h5 class="modal-title">Remove employee entry?</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
     
@@ -375,20 +357,16 @@
                     
                     <form id="deletePersonnelForm">
                         <div class="form-floating mb-3">
-                            <h6>
-                                Are you sure you want to delete this user ?
-                            </h6>
-                            <h6>
-                                All related recoreds will be deleted.
-                            </h6>
+                            <p id ="deletePersonnelQuestion">
+                            </p>
                         </div>
                     </form>
     
                 </div>
     
                 <div class="modal-footer">
-                    <button type="submit" form="deletePersonnelForm" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">DELETE</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="submit" form="deletePersonnelForm" class="btn btn-outline-secondary btn-sm myBtn" data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm myBtn" data-bs-dismiss="modal">No</button>
                 </div>
             
                 </div>
@@ -403,8 +381,8 @@
                 
                 <div class="modal-content shadow"> 
                 
-                <div class="modal-header bg-danger bg-gradient text-white">
-                    <h5 class="modal-title">Delete Department</h5>
+                <div class="modal-header bg-primary bg-gradient text-white">
+                    <h5 class="modal-title">Remove Department</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
     
@@ -412,20 +390,16 @@
                     
                     <form id="deleteDepartmentForm">
                         <div class="form-floating mb-3">
-                            <h6>
-                                Are you sure you want to delete this Department ?
-                            </h6>
-                            <h6>
-                                All related recoreds will be deleted.
-                            </h6>
+                            <p id = "removeDepartmentQuestion">
+                            </p>
                         </div>
                     </form>
     
                 </div>
     
                 <div class="modal-footer">
-                    <button type="submit" form="deleteDepartmentForm" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">DELETE</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="submit" form="deleteDepartmentForm" class="btn btn-outline-secondary btn-sm myBtn" data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm myBtn" data-bs-dismiss="modal">No</button>
                 </div>
             
                 </div>
@@ -440,8 +414,8 @@
                 
                 <div class="modal-content shadow"> 
                 
-                <div class="modal-header bg-danger bg-gradient text-white">
-                    <h5 class="modal-title">Delete Location</h5>
+                <div class="modal-header bg-primary bg-gradient text-white">
+                    <h5 class="modal-title">Remove Location</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
     
@@ -449,20 +423,16 @@
                     
                     <form id="deleteLocForm">
                         <div class="form-floating mb-3">
-                            <h6>
-                                Are you sure you want to delete this Location ?
-                            </h6>
-                            <h6>
-                                All related recoreds will be deleted.
-                            </h6>
+                            <p id = "removeLocationQuestion">
+                            </p>
                         </div>
                     </form>
     
                 </div>
     
                 <div class="modal-footer">
-                    <button type="submit" form="deleteLocForm" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">DELETE</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="submit" form="deleteLocForm" class="btn btn-outline-secondary btn-sm myBtn" data-bs-dismiss="modal">YES</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm myBtn" data-bs-dismiss="modal">NO</button>
                 </div>
             
                 </div>
@@ -474,7 +444,7 @@
         <div id="warningModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content shadow"> 
-                <div class="modal-header bg-danger bg-gradient text-white">
+                <div class="modal-header bg-primary bg-gradient text-white">
                     <h5 class="modal-title">Warning</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -494,6 +464,36 @@
             </div>
         </div>
 
+        <div id="filterPersonnelModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">      
+                <div class="modal-content shadow"> 
+                    <div class="modal-header bg-primary bg-gradient text-white">
+                        <h5 class="modal-title">Filter employees</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="filterPersonnelForm">
+                            <div class="form-floating mb-3">
+                            <select class="form-select" id="filterPersonnelByDepartment" placeholder="Department">
+                                <option value="0">All</option>
+                            </select>
+                            <label for="filterPersonnelByDepartment">Department</label>
+                            </div>
+                            <div class="form-floating">
+                            <select class="form-select" id="filterPersonnelByLocation" placeholder="Location">
+                                <option value="0">All</option>
+                            </select>
+                            <label for="filterPersonnelByLocation">Location</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" form="addPersonnelForm" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">SAVE</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     <script src="./js/jquery-2.2.3.min.js"></script> 
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

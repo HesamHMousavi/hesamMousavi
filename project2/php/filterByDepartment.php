@@ -33,29 +33,39 @@
 	}	
 
 	// SQL does not accept parameters and so is not prepared
+    // Prepare the query
+    $query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) WHERE p.departmentID = ? ORDER BY p.lastName, p.firstName, d.name, l.name';
 
-	// $query = 'SELECT id, name, locationID FROM department order by name';
+    // Prepare the statement
+    $stmt = $conn->prepare($query);
 
-	$query = 'SELECT department.id AS ID,  department.name AS departmentName, location.name AS locationName FROM department JOIN location ON department.locationID = location.id order by department.name;';
+    // Check for errors in preparation
+    if (!$stmt) {
+        $output['status']['code'] = "400";
+        $output['status']['name'] = "executed";
+        $output['status']['description'] = "query failed";	
+        $output['data'] = [];
 
-	$result = $conn->query($query);
-	
-	if (!$result) {
+        mysqli_close($conn);
 
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
+        echo json_encode($output); 
 
-		mysqli_close($conn);
+        exit;
+    }
 
-		echo json_encode($output); 
+    // Bind the parameter
+    $stmt->bind_param("i", $_REQUEST['id']);
 
-		exit;
+    // Execute the statement
+    $stmt->execute();
 
-	}
+    // Get the result
+    $result = $stmt->get_result();
+
+    // You can now fetch rows from $result
+
    
-  $data = [];
+    $data = [];
 
 	while ($row = mysqli_fetch_assoc($result)) {
 
