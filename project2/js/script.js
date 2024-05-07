@@ -17,7 +17,7 @@ $(document).ready(function(){
 
             var name = document.createElement("td");
             name.classList = "align-middle text-nowrap";
-            var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+            var nameText = document.createTextNode(`${person.lastName}, ${person.firstName}`);
             name.append(nameText);
             row.append(name);
             
@@ -234,7 +234,7 @@ $(document).ready(function(){
   
               var name = document.createElement("td");
               name.classList = "align-middle text-nowrap";
-              var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+              var nameText = document.createTextNode(`${person.lastName}, ${person.firstName}`);
               name.append(nameText);
               row.append(name);
               
@@ -487,7 +487,7 @@ $(document).ready(function(){
   
               var name = document.createElement("td");
               name.classList = "align-middle text-nowrap";
-              var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+              var nameText = document.createTextNode(`${person.lastName}, ${person.firstName}`);
               name.append(nameText);
               row.append(name);
               
@@ -576,7 +576,7 @@ $(document).ready(function(){
     
                 var name = document.createElement("td");
                 name.classList = "align-middle text-nowrap";
-                var nameText = document.createTextNode(`${person.firstName}, ${person.lastName}`);
+                var nameText = document.createTextNode(`${person.lastName}, ${person.firstName}`);
                 name.append(nameText);
                 row.append(name);
                 
@@ -668,6 +668,82 @@ $(document).ready(function(){
   });
   
   // :EDIT
+
+  $("#filterPersonnelModal").on("show.bs.modal", function(e){
+
+    const currentfilterDepartmentSelect = $('#filterPersonnelByDepartment').val();
+    const currentfilterLocationSelect = $('#filterPersonnelByLocation').val();
+
+    // Clear down the options, retrieve the data and rebuild the selects
+    
+    $.ajax({
+      url:"php/getAllDepartments.php",
+      type: "GET",
+      dataType: "json",
+      success:function(res){
+        if(res.status.code === "200"){
+          $("#filterPersonnelByDepartment").empty()
+          $("#filterPersonnelByDepartment").append(
+            $("<option>", {
+              value: 0,
+              text: "All"
+            })
+          )
+          res.data.forEach(item =>{
+            $("#filterPersonnelByDepartment").append(
+              $("<option>", {
+                value: item.ID,
+                text: item.departmentName
+              })
+            )
+          })
+          $('#filterPersonnelByDepartment').val(parseInt(currentfilterDepartmentSelect));
+        }
+        else{
+          setAlert(res.status.description)
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        setAlert(errorThrown)
+      }
+    })
+
+    $.ajax({
+      url:"php/getAllLocations.php",
+      type: "GET",
+      dataType: "json",
+      success:function(res){
+        if(res.status.code === "200"){
+          $("#filterPersonnelByLocation").empty()
+          $("#filterPersonnelByLocation").append(
+            $("<option>", {
+              value: 0,
+              text: "All"
+            })
+          );
+          res.data.forEach(location=>{
+            $("#filterPersonnelByLocation").append(
+              $("<option>", {
+                value: location.id,
+                text: location.name
+              })
+            );
+          })
+          $('#filterPersonnelByLocation').val(currentfilterLocationSelect);
+        }
+        else{
+          setAlert(res.status.description)
+          
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        setAlert(errorThrown)
+        
+      }
+    }) 
+  })
+
+
   $("#editPersonnelModal").on("show.bs.modal", function (e) {
     $.ajax({
       url:
